@@ -32,6 +32,7 @@ class Calender
 
     /**
      * @param CalenderDay $day
+     * @return void
      */
     public function addDay(CalenderDay $day)
     {

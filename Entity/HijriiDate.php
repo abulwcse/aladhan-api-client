@@ -58,7 +58,7 @@ class HijriiDate
     }
 
     /**
-     * @param int $date
+     * @param string $date
      * @return HijriiDate
      */
     public function setDate(string $date): HijriiDate

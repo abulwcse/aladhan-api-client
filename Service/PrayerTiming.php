@@ -2,11 +2,11 @@
 
 namespace Abulh\Service;
 
-use Abulh\Entity\PrayerTime;
+use Abulh\Entity\Calender;
 use Abulh\Transformer\PrayerTimeResponseTransformer;
-use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class PrayerTiming
 {
@@ -50,7 +50,7 @@ class PrayerTiming
 
 
     /**
-     * @var Client
+     * @var ClientInterface
      */
     private $client;
 
@@ -71,7 +71,7 @@ class PrayerTiming
      * @param int $month
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getPrayerTimeForMonthForLatLong(
@@ -97,7 +97,7 @@ class PrayerTiming
      * @param float $long
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getAnnualPrayerTimeForLatLong(
@@ -121,7 +121,7 @@ class PrayerTiming
      * @param int $month
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getPrayerTimeForMonthForAddress(
@@ -143,7 +143,7 @@ class PrayerTiming
      * @param string $address
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getAnnualPrayerTimeForAddress(
@@ -165,7 +165,7 @@ class PrayerTiming
      * @param int $month
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getPrayerTimeForMonthByCity(
@@ -187,7 +187,7 @@ class PrayerTiming
      * @param string $city
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getAnnualPrayerTimeByCity(
@@ -210,7 +210,7 @@ class PrayerTiming
      * @param int $month
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getPrayerTimeForMonthForLatLongBasedOnHijriCalender(
@@ -236,7 +236,7 @@ class PrayerTiming
      * @param float $long
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getAnnualPrayerTimeForLatLongBasedOnHijriCalender(
@@ -260,7 +260,7 @@ class PrayerTiming
      * @param int $month
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getPrayerTimeForMonthForAddressBasedOnHijriCalender(
@@ -282,7 +282,7 @@ class PrayerTiming
      * @param string $address
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getAnnualPrayerTimeForAddressBasedOnHijriCalender(
@@ -304,7 +304,7 @@ class PrayerTiming
      * @param int $month
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getPrayerTimeForMonthByCityBasedOnHijriCalender(
@@ -326,7 +326,7 @@ class PrayerTiming
      * @param string $city
      * @param int $year
      * @param array $options
-     * @return PrayerTime[]
+     * @return Calender
      * @throws \Exception
      */
     public function getAnnualPrayerTimeByCityBasedOnHijriCalender(
@@ -345,14 +345,15 @@ class PrayerTiming
     }
 
     /**
-     * @param $url
-     * @param $queryOptions
-     * @return PrayerTime[]
+     * @param string $url
+     * @param array $queryOptions
+     * @return Calender
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function request($url, $queryOptions)
+    protected function request(string $url, array $queryOptions)
     {
-        $response = $this->client->get($url, [
+        $response = $this->client->request('GET', $url, [
             'query' => array_merge($queryOptions, [
                 'method' => self::UMM_AL_QURA_UNIVERSITY_MAKKAH_METHOD,
                 'tune' => '0,0,0,0,0',
@@ -377,14 +378,15 @@ class PrayerTiming
         if (!empty(array_diff(array_keys($options), self::ALLOWED_OPTIONS))) {
             throw new \Exception("Invalid option given. Only the following options are supported");
         }
+        return true;
     }
 
     /**
-     * @param Response $response
-     * @return array
+     * @param ResponseInterface $response
+     * @return Calender
      * @throws \Exception
      */
-    protected function validateAndTransformResult(Response $response)
+    protected function validateAndTransformResult(ResponseInterface $response)
     {
         if ($response->getStatusCode() == 200) {
             $transformed = $this->_transformResponseToJsonArray($response);
@@ -397,15 +399,11 @@ class PrayerTiming
     }
 
     /**
-     * @param Response $response
+     * @param ResponseInterface $response
      * @return array
      */
-    private function _transformResponseToJsonArray(Response $response)
+    private function _transformResponseToJsonArray(ResponseInterface $response)
     {
-        if ($response->getBody()) {
-            return json_decode($response->getBody()->getContents(), true);
-        }
-
-        return [];
+        return json_decode($response->getBody()->getContents(), true);
     }
 }

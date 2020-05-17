@@ -65,11 +65,11 @@ class PrayerTimeResponseTransformer
     }
 
     /**
-     * @param $waqt
-     * @param $data
-     * @return false|string
+     * @param string $waqt
+     * @param array $data
+     * @return string
      */
-    private function getFormattedPrayerTime($waqt, $data)
+    private function getFormattedPrayerTime(string $waqt, array $data)
     {
         return substr($data[$waqt], 0, 5);
     }
