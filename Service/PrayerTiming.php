@@ -72,7 +72,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getPrayerTimeForMonthForLatLong(
         float $lat,
@@ -98,7 +98,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAnnualPrayerTimeForLatLong(
         float $lat,
@@ -122,7 +122,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getPrayerTimeForMonthForAddress(
         string $address,
@@ -144,7 +144,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAnnualPrayerTimeForAddress(
         string $address,
@@ -166,7 +166,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getPrayerTimeForMonthByCity(
         string $city,
@@ -188,7 +188,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAnnualPrayerTimeByCity(
         string $city,
@@ -211,7 +211,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getPrayerTimeForMonthForLatLongBasedOnHijriCalender(
         float $lat,
@@ -237,7 +237,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAnnualPrayerTimeForLatLongBasedOnHijriCalender(
         float $lat,
@@ -261,7 +261,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getPrayerTimeForMonthForAddressBasedOnHijriCalender(
         string $address,
@@ -283,7 +283,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAnnualPrayerTimeForAddressBasedOnHijriCalender(
         string $address,
@@ -305,7 +305,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getPrayerTimeForMonthByCityBasedOnHijriCalender(
         string $city,
@@ -327,7 +327,7 @@ class PrayerTiming
      * @param int $year
      * @param array $options
      * @return Calender
-     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAnnualPrayerTimeByCityBasedOnHijriCalender(
         string $city,
@@ -391,7 +391,12 @@ class PrayerTiming
         if ($response->getStatusCode() == 200) {
             $transformed = $this->_transformResponseToJsonArray($response);
             if (!empty($transformed) && array_key_exists('status', $transformed) && $transformed['status'] === 'OK') {
-                return $this->transformer->transform($transformed);
+                $data = $transformed['data'];
+                if (count($data) === 12) {
+                    return $this->transformer->transformYearData($data);
+                }
+                return $this->transformer->transformMonthData($data);
+            }
             }
         }
 

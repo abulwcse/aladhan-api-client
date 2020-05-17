@@ -38,4 +38,13 @@ class Calender
     {
         $this->days[] = $day;
     }
+
+    /**
+     * @param CalenderDay[] $days
+     * @return void
+     */
+    public function addDays(array $days)
+    {
+        $this->days = array_merge_recursive($this->days , $days);
+    }
 }
