@@ -3,6 +3,8 @@
 
 namespace Abulh\Transformer;
 
+use Abulh\Entity\Calender;
+use Abulh\Entity\CalenderDay;
 use Abulh\Entity\HijriiDate;
 use Abulh\Entity\Metadata\SplDate;
 use Abulh\Entity\PrayerTime;
@@ -10,13 +12,22 @@ use DateTime;
 
 class PrayerTimeResponseTransformer
 {
-
+    /**
+     * @param array $response
+     * @return Calender
+     * @throws \Exception
+     */
     public function transform(array $response)
     {
         $dataToTransform = $response['data'];
-        $result = [];
+        $calender = new Calender();
         foreach ($dataToTransform as $data) {
+            $day = new CalenderDay();
+
             $timings = $data['timings'];
+            $date = $data['date'];
+            $metadata = $data['meta'];
+
             $prayerTime = new PrayerTime();
             $prayerTime->setFajr($this->getFormattedPrayerTime('Fajr', $timings))
                 ->setSunrise($this->getFormattedPrayerTime('Sunrise', $timings))
@@ -29,11 +40,11 @@ class PrayerTimeResponseTransformer
                 ->setSunset($this->getFormattedPrayerTime('Sunset', $timings));
 
             $dt = new DateTime();
-            $dt->setTimestamp($data['date']['timestamp']);
-            $prayerTime->setDate($dt);
+            $dt->setTimestamp($date['timestamp']);
+            $day->setDate($dt);
 
             $hijriDate = new HijriiDate();
-            $hijri = $data['date']['hijri'];
+            $hijri = $date['hijri'];
             $hijriDate->setDate($hijri['date'])
                 ->setDayOfMonth(intval($hijri['day']))
                 ->setWeekDayInArabic($hijri['weekday']['ar'])
@@ -44,13 +55,13 @@ class PrayerTimeResponseTransformer
                 ->setYear(intval($hijri['year']))
                 ->setDesignation($hijri['designation']['abbreviated']);
 
-            $prayerTime->setHijriDate($hijriDate);
-            $prayerTime->setMetadata($data['meta']);
+            $day->setHijriDate($hijriDate);
+            $day->setMetadata($metadata);
 
-            $result[] = $prayerTime;
+            $calender->addDay($day);
         }
 
-        return $result;
+        return $calender;
     }
 
     /**

@@ -10,16 +10,6 @@ use DateTime;
 class PrayerTime
 {
     /**
-     * @var DateTime
-     */
-    private $date;
-
-    /**
-     * @var HijriiDate
-     */
-    private $hijriDate;
-
-    /**
      * @var string
      */
     private $fajr;
@@ -63,48 +53,6 @@ class PrayerTime
      * @var string
      */
     private $midnight;
-
-
-    /**
-     * @var array
-     */
-    private $metadata;
-
-    /**
-     * @return DateTime
-     */
-    public function getDate(): DateTime
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param DateTime $date
-     * @return PrayerTime
-     */
-    public function setDate(DateTime $date): PrayerTime
-    {
-        $this->date = $date;
-        return $this;
-    }
-
-    /**
-     * @return HijriiDate
-     */
-    public function getHijriDate(): HijriiDate
-    {
-        return $this->hijriDate;
-    }
-
-    /**
-     * @param HijriiDate $hijriDate
-     * @return PrayerTime
-     */
-    public function setHijriDate(HijriiDate $hijriDate): PrayerTime
-    {
-        $this->hijriDate = $hijriDate;
-        return $this;
-    }
 
     /**
      * @return string
@@ -205,7 +153,7 @@ class PrayerTime
     }
 
     /**
-     * @param string $maghribb
+     * @param string $maghrib
      * @return PrayerTime
      */
     public function setMaghrib(string $maghrib): PrayerTime
@@ -267,24 +215,4 @@ class PrayerTime
         $this->midnight = $midnight;
         return $this;
     }
-
-    /**
-     * @return array
-     */
-    public function getMetadata(): array
-    {
-        return $this->metadata;
-    }
-
-    /**
-     * @param array $metadata
-     * @return PrayerTime
-     */
-    public function setMetadata(array $metadata): PrayerTime
-    {
-        $this->metadata = $metadata;
-        return $this;
-    }
-
-
 }

@@ -12,7 +12,9 @@
     }
   },
   "license": "MIT",
-  "require":{
+  "require": {
+    "php":"^7.2",
+    "ext-json": "*",
     "guzzlehttp/guzzle": "^6.0.0"
   }
 }

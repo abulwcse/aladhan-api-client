@@ -1,14 +1,11 @@
 <?php
 
-
 namespace Abulh\Service;
-
 
 use Abulh\Entity\PrayerTime;
 use Abulh\Transformer\PrayerTimeResponseTransformer;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Response;
 
 class PrayerTiming
@@ -62,9 +59,9 @@ class PrayerTiming
      */
     private $transformer;
 
-    public function __construct(ClientInterface $client = null, PrayerTimeResponseTransformer $transformer = null)
+    public function __construct(ClientInterface $client)
     {
-        $this->client = new Client();
+        $this->client = $client;
         $this->transformer = new PrayerTimeResponseTransformer();
     }
 
