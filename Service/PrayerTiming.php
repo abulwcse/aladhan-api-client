@@ -397,7 +397,6 @@ class PrayerTiming
                 }
                 return $this->transformer->transformMonthData($data);
             }
-            }
         }
 
         throw new \Exception($response->getReasonPhrase());
