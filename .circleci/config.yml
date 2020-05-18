@@ -21,8 +21,8 @@ jobs:
       - run: ./vendor/bin/phpstan analyse -c phpstan.neon
       - run: ./vendor/bin/security-checker security:check composer.lock
       - run:
-        name: "Run tests"
-        command: phpdbg -qrr vendor/bin/phpunit --coverage-html build/coverage-report
-        - store_artifacts:
-         path:  build/coverage-report
+          name: "Run tests"
+          command: phpdbg -qrr vendor/bin/phpunit --coverage-html build/coverage-report
+      - store_artifacts:
+          path:  build/coverage-report
 
