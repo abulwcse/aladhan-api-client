@@ -112,7 +112,7 @@ class PrayerTiming
                 'lat' => $lat,
                 'long' => $long,
                 'year' => $year,
-                'annual' => true,
+                'annual' => 'true',
             ], $options));
     }
 
@@ -156,7 +156,7 @@ class PrayerTiming
         return $this->request(self::API_BASE_URL . 'calendarByAddress', array_merge([
             'address' => $address,
             'year' => $year,
-            'annual' => true,
+            'annual' => 'true',
         ], $options));
     }
 
@@ -199,7 +199,7 @@ class PrayerTiming
         $this->validateOption($options);
         return $this->request(self::API_BASE_URL . 'calendarByCity', array_merge([
             'city' => $city,
-            'annual' => true,
+            'annual' => 'true',
             'year' => $year,
         ], $options));
     }
@@ -251,7 +251,7 @@ class PrayerTiming
             'lat' => $lat,
             'long' => $long,
             'year' => $year,
-            'annual' => true,
+            'annual' => 'true',
         ], $options));
     }
 
@@ -295,7 +295,7 @@ class PrayerTiming
         return $this->request(self::API_BASE_URL . 'hijriCalendarByAddress', array_merge([
             'address' => $address,
             'year' => $year,
-            'annual' => true,
+            'annual' => 'true',
         ], $options));
     }
 
@@ -338,7 +338,7 @@ class PrayerTiming
         $this->validateOption($options);
         return $this->request(self::API_BASE_URL . 'hijriCalendarByCity', array_merge([
             'city' => $city,
-            'annual' => true,
+            'annual' => 'true',
             'year' => $year,
         ], $options));
 
