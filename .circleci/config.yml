@@ -19,3 +19,4 @@ jobs:
       # run tests with phpunit or codecept
       #- run: ./vendor/bin/phpunit
       - run: ./vendor/bin/phpstan analyse -c phpstan.neon
+      - run: ./vendor/bin/security-checker security:check composer.lock
