@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.2-node-browsers
+      - image: circleci/php:7-fpm-browsers-legacy
 
     steps:
       - checkout
@@ -20,3 +20,9 @@ jobs:
       #- run: ./vendor/bin/phpunit
       - run: ./vendor/bin/phpstan analyse -c phpstan.neon
       - run: ./vendor/bin/security-checker security:check composer.lock
+      - run:
+        name: "Run tests"
+        command: phpdbg -qrr vendor/bin/phpunit --coverage-html build/coverage-report
+        - store_artifacts:
+         path:  build/coverage-report
+
